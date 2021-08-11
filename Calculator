@@ -1,0 +1,201 @@
+
+import java.awt.*;
+import java.awt.event.ActionListener;
+import java.util.Scanner;
+import java.lang.Math;
+
+
+/*
+ Step 1: Ask the user whether they want to calculate the area or perimeter
+ Step 2: Get the number of points
+ Step 3: Get the coordinates
+ Step 4a: Calculate perimeter
+          - find the distance between two points
+          - add the distances to get the total perimeter
+
+ Step 4b: Calculate the area
+          -Tell the user about the minimum and maximum number of points of your shape
+          - Use the ˚Shoelace Algorithm to calculate the area of a polygon
+ Step 5: Return the values and print them for the user.
+ */
+
+
+public class GeometricCalculator {
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        System.out.println("Hi user! Welcome to the Geometric Calculator! \nPLease enter if you want to calculate the perimeter or the area of a shape.");
+        String type = input.next();
+
+        System.out.println("Please enter the number of points in your shape. ");
+        int points = input.nextInt();
+        System.out.println("Now please enter the coordinates of your points. ");
+        int count = 0;
+        double[] x = new double[points];
+        double[] y = new double[points];
+        if (type.equalsIgnoreCase("Perimeter") || type.equalsIgnoreCase("permeter")) {
+            System.out.println("Please enter the x coordinates");
+            for (int i = 0; i < points; i++) {
+                x[i] = input.nextDouble();
+            }
+            System.out.println("Please enter the y coordinates");
+            for (int i = 0; i < points; i++) {
+                y[i] = input.nextDouble();
+            }
+            for (int i = 0; i < points; i++) {
+                count++;
+                System.out.print("\nx" + count + ": " + x[i]);
+                System.out.print("\ny" + count + ": " + y[i] + "\n");
+            }
+            CoordinateSort sort = new CoordinateSort();
+            CoordinateSort.SortingCoordinates(x);
+
+
+
+            System.out.print("\nTotal perimeter: " + Perimeter(x, y, points));
+        }// end of if statement for Perimeter
+
+        else if (type.equalsIgnoreCase("Area") || (type.equalsIgnoreCase(" arae"))) {
+            System.out.println("Please enter the x coordinates");
+            for (int i = 0; i < points; i++) {
+                x[i] = input.nextInt();
+            }
+            System.out.println("Please enter the y coordinates");
+            for (int i = 0; i < points; i++) {
+                y[i] = input.nextInt();
+            }
+            for (int i = 0; i < points; i++) {
+                count++;
+                System.out.print("\nx" + count + ": " + x[i]);
+                System.out.print("\ny" + count + ": " + y[i] + "\n");
+            }
+
+            System.out.println("\nThe total area of the shape: " + Area(x, y, points) + "unit squared");
+        }//end of calculating Area
+
+        else if (type.equalsIgnoreCase("Midsegment") || (type.equalsIgnoreCase("mid segment"))) {
+            System.out.println("Please enter the x coordinates");
+            for (int i = 0; i < points; i++) {
+                x[i] = input.nextInt();
+            }
+            System.out.println("Please enter the y coordinates");
+            for (int i = 0; i < points; i++) {
+                y[i] = input.nextInt();
+            }
+            for (int i = 0; i < points; i++) {
+                count++;
+                System.out.print("\nx" + count + ": " + x[i]);
+                System.out.print("\ny" + count + ": " + y[i] + "\n");
+            }
+
+
+        }// end of calculating mid segment
+
+
+
+    }
+
+
+
+
+    //Method for Perimeter
+    public static double Perimeter(double[] x, double[] y, int points){
+        double sum = 0;
+        for(int i = 0; i<points-1; i++){
+            double distance = Math.sqrt(Math.pow((x[i] - x[i+1]), 2) + Math.pow((y[i]-y[i+1]), 2));
+            sum = distance + distance;
+        }
+        double lastPointDis = Math.sqrt(Math.pow(x[points-1] - x[0], 2) + Math.pow(y[points-1] - y[0], 2));
+        double perim = sum + lastPointDis;
+
+        return perim;
+
+    }
+    //Method for Area
+    public static double Area(double[] x, double[] y, int points){
+        double first = 0;
+        double second = 0;
+        double area = 0;
+        double s = 0;
+        double s2 = 0;
+        for(int i = 0; i<points-1; i++){
+            first = x[i+1]*y[i];
+            s = s+first;
+            }
+        first = x[0] * y[points-1];
+        s = s+first;
+
+        for(int i = 0; i<points-1; i++){
+            second = x[i]*y[i+1];
+            s2 = s2 + second;
+
+            }
+        second = x[points-1]*y[0];
+
+        s2 = s2+second;
+
+        area = s - s2;
+        area = area/2;
+
+        return Math.abs(area);
+    }
+
+    //Method for Midsegment
+    public static double MidSegment(double[] x, double[] y, int points){
+        double sum = 0;
+        double distance = 0;
+        for(int i = 0; i<points-1; i++){
+            distance = Math.sqrt(Math.pow(0.5*(x[i] - x[i+i]), 2) + Math.pow(0.5*(y[i]-y[i+1]), 2));
+            double midpoint = distance;
+            System.out.println(midpoint);
+        }
+        double midpoint = distance;
+        return midpoint;
+
+    }
+
+
+
+}
+
+class CoordinateSort {
+    public static void SortingCoordinates(double[] x) {
+        boolean sorted = false;
+        int l = x.length;
+        double[] newArray = new double[l];
+
+        while (!sorted) {
+            sorted = true;
+            for (int i = 0; i < l - 1; i++) {
+                for (int j = 0; j < l; j++) {
+                    if (x[i] > x[i + 1]) {
+                        //swap
+                        double tmp = x[i];
+                        x[i] = x[i + 1];
+                        x[i + 1] = tmp;
+//                    newArray[j] = x[i+1];
+//                    newArray[j+1] = x[i];
+
+                        sorted = false;
+                    }
+                }
+
+            }
+        }
+    }
+
+}
+class tinyTest{
+    public static void main(String[] args) {
+        double[] array = {5.0, 2.1, 0.0, 3.4, 6.7};
+        CoordinateSort sort = new CoordinateSort();
+        CoordinateSort.SortingCoordinates(array);
+        tinyTest.print(array);
+    }
+
+    static void print(double[] toPrint) {
+        for (int i = 0; i < toPrint.length; ++i) {
+            System.out.print(toPrint[i] + " ");
+        }
+    }
+}
+
